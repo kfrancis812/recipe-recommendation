@@ -1,0 +1,52 @@
+:root {
+  font-family: Roboto, system-ui, Helvetica, Arial, sans-serif;
+}
+
+a {
+  font-weight: 500;
+  color: #000;
+  text-decoration: inherit;
+}
+
+
+
+body{
+  margin: 0;
+}
+
+
+#app {
+  display: flex;
+  flex-flow:column;
+}
+
+
+
+h1 {
+  font-size: 2.0em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: 1px solid transparent;
+  background-color: #FABA9E;
+  color: black;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+
+
