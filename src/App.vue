@@ -25,7 +25,7 @@ const page = ref("mealType");
 
 function fetchData() {
   const apiKey = import.meta.env.VITE_SPOON_API_KEY;
-  const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&query=pasta&maxFat=25&number=2`;
+  const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&type=${selectionMealType.value}&number=6`;
   fetch(url)
     .then((res) => {
       if (!res.ok) {
@@ -47,21 +47,16 @@ function addData(mealType) {
 
 <template>
   <div id="navbar">
-    <a href="#default" id="logo">Dish Decision</a>
+    <a @click="page = 'mealType'" id="logo">Dish Decision</a>
     <div id="navbar-right">
-      <a class="active" href="#home">Home</a>
-      <a href="#default">Start Over</a>
+      <a @click="page = 'mealType'">Start Over</a>
     </div>
   </div>
+  <!-- content section for meal type question -->
+
   <div class="content" v-if="page === 'mealType'">
     <div class="header">
       <h1>What specific dish are you planning to prepare?</h1>
-    </div>
-    <div>
-      <button @click="fetchData">fetch</button>
-      <div v-for="recipe in results" :key="recipe.id">
-        <h2>{{ recipe.title }}</h2>
-      </div>
     </div>
 
     <div class="wrapper">
@@ -74,11 +69,34 @@ function addData(mealType) {
         {{ mealType }}
       </button>
     </div>
-    <div class="next"><button @click="page = 'cusine'">Next</button></div>
+    <div class="subNav">
+      <button
+        @click="
+          page = 'recipes';
+          fetchData();
+        "
+      >
+        Next
+      </button>
+    </div>
   </div>
+  <!-- end meal type content-->
 
-  <div class="content" v-if="page === 'cusine'">
-    <h1>New Recipes</h1>
+  <!--content section for recipes suggestions-->
+  <div class="content" v-if="page === 'recipes'">
+    <div class="header">
+      <h1>Recipes based on your selection:</h1>
+    </div>
+    <div class="wrapper">
+      <button class="itemRecipe" v-for="recipe in results" :key="recipe.id">
+        <h2>{{ recipe.title }}</h2>
+        <img :src="recipe.image" />
+      </button>
+    </div>
+    <div class="subNav">
+      <button @click="page = 'mealType'">Back</button
+      ><button @click="page = 'cusine'">Next</button>
+    </div>
   </div>
   <div id="footer">
     <p class="light">Created by Kristin Francis, see portfolio</p>
@@ -164,10 +182,35 @@ function addData(mealType) {
   outline: 0;
 }
 
-.next {
+.itemRecipe {
+  width: 400px;
+  height: 350px;
+  text-align: center;
+  background-color: #776281;
+  margin: 10px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.itemRecipe img {
+  flex-shrink: 1;
+}
+
+.subNav {
   margin: 20px;
   display: flex;
   justify-content: center;
+}
+.subNav button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+h2 {
+  margin-top: 0px;
 }
 
 .light {
