@@ -1,8 +1,22 @@
-# Vue 3 + Vite
+# Dish Decision | Code Louisville Web Dev Project
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## About this Project
 
-## Recommended IDE Setup
+This website allows users to search for recipes based on the type of meal they're looking to prepare. It provides a few options based on their selection. Then they can view the ingredients and instructions for the chosen recipe.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-# recipe-recommendation
+This project utlizes Vue, Vite, and [spoonacular API](https://spoonacular.com/food-api/docs)
+
+## Project Features
+
+1. Use arrays, objects, sets or maps to store and retrieve information that is displayed in your app.
+2.
+3. Retrieve data from a third-party API and use it to display something within your app.
+4. Develop your project using a common JavaScript framework such as React, Angular, or Vue.
+
+## How to Run on your Machine
+
+1. Download Project
+2. Open the project folder in terminal & run 'npm install'
+3. Create a .env file in the folder and add the following, replacing APIKEY with the provided API Key in the form submission (or get your own at [spoonacular API](https://spoonacular.com/food-api/docs)):
+   a. 'VITE_SPOON_API_KEY=APIKEY'
+4. In terminal run 'npm run dev'
