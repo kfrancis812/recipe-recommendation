@@ -2,6 +2,8 @@
 import { ref } from "vue";
 
 const results = ref([]);
+const recipeList = ref([]);
+
 const mealTypes = ref([
   "Main course",
   "Side dish",
@@ -20,6 +22,7 @@ const mealTypes = ref([
 ]);
 
 const selectionMealType = ref(null);
+const selectionRecipeId = ref(null);
 
 const page = ref("mealType");
 
@@ -42,6 +45,28 @@ function fetchData() {
 function addData(mealType) {
   selectionMealType.value = mealType;
   console.log(selectionMealType.value);
+}
+
+function addRecipeData(recipeId) {
+  selectionRecipeId.value = recipeId;
+  console.log(selectionRecipeId.value);
+}
+
+function fetchRecipeData() {
+  const apiKey = import.meta.env.VITE_SPOON_API_KEY;
+  const url = `https://api.spoonacular.com/recipes/${selectionRecipeId.value}/information?apiKey=${apiKey}`;
+
+  fetch(url)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      recipeList.value = data;
+    })
+    .catch((err) => console.log(err.message));
 }
 </script>
 
@@ -88,18 +113,59 @@ function addData(mealType) {
       <h1>Recipes based on your selection:</h1>
     </div>
     <div class="wrapper">
-      <button class="itemRecipe" v-for="recipe in results" :key="recipe.id">
+      <button
+        @click="addRecipeData(recipe.id)"
+        class="itemRecipe"
+        v-for="recipe in results"
+        :key="recipe.id"
+      >
         <h2>{{ recipe.title }}</h2>
         <img :src="recipe.image" />
       </button>
     </div>
     <div class="subNav">
       <button @click="page = 'mealType'">Back</button
-      ><button @click="page = 'cusine'">Next</button>
+      ><button
+        @click="
+          page = 'recipeDetail';
+          fetchRecipeData();
+        "
+      >
+        Next
+      </button>
     </div>
   </div>
+
+  <!-- end recipe suggestions -->
+
+  <!-- content section for recipe detail-->
+
+  <div class="content" v-if="page === 'recipeDetail'">
+    <div class="header">
+      <h1>{{ recipeList.title }}</h1>
+      <img :src="recipeList.image" />
+      <!-- <div v-html="recipeList.summary"></div> -->
+      <h2 class="recipeHeader">Ingredients</h2>
+      <div
+        v-for="ingredient in recipeList.extendedIngredients"
+        :key="ingredient.id"
+      >
+        {{ ingredient.original }}
+      </div>
+      <h2>Instructions</h2>
+
+      <div class="instructions" v-html="recipeList.instructions"></div>
+    </div>
+    <div class="wrapper"></div>
+    <div class="subNav">
+      <button @click="page = 'recipes'">Back</button>
+      <button @click="page = 'mealType'">Start Over</button>
+    </div>
+  </div>
+
+  <!--end recipe detail-->
   <div id="footer">
-    <p class="light">Created by Kristin Francis, see portfolio</p>
+    <p class="light">Created by Kristin Francis.</p>
   </div>
 </template>
 
@@ -195,8 +261,19 @@ function addData(mealType) {
   align-items: center;
 }
 
-.itemRecipe img {
-  flex-shrink: 1;
+.itemRecipe:hover {
+  border-color: #ebf3ff;
+  background-color: #ebf3ff;
+  border: 1px solid transparent;
+  color: black;
+}
+
+.itemRecipe:focus {
+  border-color: #cdddf2;
+  background-color: #cdddf2;
+  color: black;
+  border: 1px solid transparent;
+  outline: 0;
 }
 
 .subNav {
@@ -209,12 +286,18 @@ function addData(mealType) {
   margin-right: 10px;
 }
 
-h2 {
+.itemRecipe > h2 {
   margin-top: 0px;
 }
 
 .light {
   font-size: 14px;
   color: #c3cbd7;
+}
+
+.instructions {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 40px;
 }
 </style>
