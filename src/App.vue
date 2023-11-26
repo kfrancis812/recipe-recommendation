@@ -88,6 +88,7 @@ function fetchRecipeData() {
       <button
         @click="addData(mealType)"
         class="item"
+        :class="{ selected: selectionMealType === mealType }"
         v-for="(mealType, index) in mealTypes"
         :key="index"
       >
@@ -116,11 +117,12 @@ function fetchRecipeData() {
       <button
         @click="addRecipeData(recipe.id)"
         class="itemRecipe"
+        :class="{ selected: selectionRecipeId === recipe.id }"
         v-for="recipe in results"
         :key="recipe.id"
       >
         <h2>{{ recipe.title }}</h2>
-        <img :src="recipe.image" />
+        <img class="recipeImage" :src="recipe.image" />
       </button>
     </div>
     <div class="subNav">
@@ -143,7 +145,7 @@ function fetchRecipeData() {
   <div class="content" v-if="page === 'recipeDetail'">
     <div class="header">
       <h1>{{ recipeList.title }}</h1>
-      <img :src="recipeList.image" />
+      <img class="recipeImage" :src="recipeList.image" />
       <!-- <div v-html="recipeList.summary"></div> -->
       <h2 class="recipeHeader">Ingredients</h2>
       <div
@@ -169,7 +171,7 @@ function fetchRecipeData() {
   </div>
 </template>
 
-<style scoped>
+<style>
 #navbar {
   background: #9ca8b8;
   /* height: 80px; */
@@ -210,7 +212,19 @@ function fetchRecipeData() {
 }
 
 .header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+}
+
+.recipeImage {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #footer {
@@ -248,6 +262,14 @@ function fetchRecipeData() {
   outline: 0;
 }
 
+.item.selected {
+  border-color: #cdddf2;
+  background-color: #cdddf2;
+  color: black;
+  border: 1px solid transparent;
+  outline: 0;
+}
+
 .itemRecipe {
   width: 400px;
   height: 350px;
@@ -269,6 +291,14 @@ function fetchRecipeData() {
 }
 
 .itemRecipe:focus {
+  border-color: #cdddf2;
+  background-color: #cdddf2;
+  color: black;
+  border: 1px solid transparent;
+  outline: 0;
+}
+
+.itemRecipe.selected {
   border-color: #cdddf2;
   background-color: #cdddf2;
   color: black;
@@ -299,5 +329,11 @@ function fetchRecipeData() {
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 40px;
+  text-align: center;
+  list-style-position: inside;
+}
+
+.instructions ol {
+  padding-left: 0px;
 }
 </style>
