@@ -26,6 +26,14 @@ const selectionRecipeId = ref(null);
 
 const page = ref("mealType");
 
+function isActive() {
+  return selectionMealType.value !== null && selectionMealType.value !== "";
+}
+
+function isActiveRecipe() {
+  return selectionRecipeId.value !== null && selectionRecipeId.value !== "";
+}
+
 function fetchData() {
   const apiKey = import.meta.env.VITE_SPOON_API_KEY;
   const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&type=${selectionMealType.value}&number=6`;
@@ -68,13 +76,20 @@ function fetchRecipeData() {
     })
     .catch((err) => console.log(err.message));
 }
+
+function startOver() {
+  page.value = "mealType";
+  selectionMealType.value = null;
+  selectionRecipeId.value = null;
+  console.log(selectionMealType.value);
+}
 </script>
 
 <template>
   <div id="navbar">
     <a @click="page = 'mealType'" id="logo">Dish Decision</a>
     <div id="navbar-right">
-      <a @click="page = 'mealType'">Start Over</a>
+      <a @click="startOver">Start Over</a>
     </div>
   </div>
   <!-- content section for meal type question -->
@@ -101,6 +116,8 @@ function fetchRecipeData() {
           page = 'recipes';
           fetchData();
         "
+        :disabled="!isActive()"
+        :class="{ active: isActive() }"
       >
         Next
       </button>
@@ -132,6 +149,8 @@ function fetchRecipeData() {
           page = 'recipeDetail';
           fetchRecipeData();
         "
+        :disabled="!isActiveRecipe()"
+        :class="{ active: isActiveRecipe() }"
       >
         Next
       </button>
@@ -161,7 +180,7 @@ function fetchRecipeData() {
     <div class="wrapper"></div>
     <div class="subNav">
       <button @click="page = 'recipes'">Back</button>
-      <button @click="page = 'mealType'">Start Over</button>
+      <button @click="startOver">Start Over</button>
     </div>
   </div>
 
@@ -225,6 +244,23 @@ function fetchRecipeData() {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.active {
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color 0.25s;
+}
+
+.active:hover {
+  border-color: 1px solid transparent;
+  background-color: #faba9e;
+  color: black;
 }
 
 #footer {
@@ -311,6 +347,10 @@ function fetchRecipeData() {
   display: flex;
   justify-content: center;
 }
+button:disabled {
+  cursor: not-allowed;
+}
+
 .subNav button {
   margin-left: 10px;
   margin-right: 10px;

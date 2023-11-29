@@ -19,6 +19,5 @@ Please note this is a one page website, so make sure to use the buttons at the b
 
 1. Clone Repository
 2. Run `npm install` on folder
-3. Create a .env file in the folder and add the following, replacing APIKEY with the provided API Key in the form submission (or get your own at [spoonacular API](https://spoonacular.com/food-api/docs)):
-   a. `VITE_SPOON_API_KEY=APIKEY`
+3. Create a .env file in the folder and add the following, replacing APIKEY with the provided API Key in the form submission (or get your own at [spoonacular API](https://spoonacular.com/food-api/docs)):`VITE_SPOON_API_KEY=APIKEY`
 4. In terminal run `npm run dev` and copy the localhost url to your browser.
